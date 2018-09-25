@@ -464,7 +464,7 @@ public class CircuitSim extends Application {
 		       : circuitManagers.get(tab.getText()).getValue();
 	}
 	
-	String getCircuitName(CircuitManager manager) {
+	public String getCircuitName(CircuitManager manager) {
 		for(Entry<String, Pair<ComponentLauncherInfo, CircuitManager>> entry : circuitManagers.entrySet()) {
 			if(entry.getValue().getValue() == manager) {
 				return entry.getKey();
@@ -473,12 +473,20 @@ public class CircuitSim extends Application {
 		
 		return null;
 	}
+
+    public Map<String, CircuitManager> getCircuitManagers() {
+		return circuitManagers.keySet().stream()
+		                      .collect(Collectors.toMap(name -> name,
+		                                                name -> circuitManagers.get(name).getValue(),
+		                                                (v1, v2) -> v1,
+		                                                LinkedHashMap::new));
+    }
 	
-	CircuitManager getCircuitManager(String name) {
+	public CircuitManager getCircuitManager(String name) {
 		return circuitManagers.containsKey(name) ? circuitManagers.get(name).getValue() : null;
 	}
 	
-	CircuitManager getCircuitManager(Circuit circuit) {
+	public CircuitManager getCircuitManager(Circuit circuit) {
 		for(Entry<String, Pair<ComponentLauncherInfo, CircuitManager>> entry : circuitManagers.entrySet()) {
 			if(entry.getValue().getValue().getCircuit() == circuit) {
 				return entry.getValue().getValue();
